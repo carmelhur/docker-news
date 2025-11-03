@@ -1,0 +1,60 @@
+services:
+
+  redis:
+    image: redis:7
+    container_name: redis
+    restart: always
+    networks:
+      - news_net
+
+
+  mongo:
+    image: mongo:7
+    container_name: mongo
+    restart: always
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - news_net
+
+
+  news-fetcher:
+    build: ./news-fetcher
+    container_name: news-fetcher
+    env_file: .env
+    restart: always
+    networks:
+      - news_net
+    depends_on:
+      - redis
+
+
+  news-processor:
+    build: ./news-processor
+    container_name: news-processor
+    env_file: .env
+    restart: always
+    networks:
+      - news_net
+    depends_on:
+      - redis
+      - mongo
+
+
+  news-frontend:
+    build: ./news-frontend
+    container_name: news-frontend
+    env_file: .env
+    ports:
+      - "8000:8000"
+    restart: always
+    networks:
+      - news_net
+    depends_on:
+      - mongo
+
+networks:
+  news_net:
+
+volumes:
+  mongo_data:
