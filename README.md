@@ -6,7 +6,7 @@ The fetcher reads RSS feeds (like BBC Tech or NYTimes Tech). RSS is a news forma
 The processor listens to Redis, gets each link, and checks if it’s about technology. It uses a list of tech words like “ai”, “cloud”, “docker”, “linux”. If it fits, it saves the link in MongoDB. The upsert=True makes sure no duplicate articles are saved.
 
 The frontend connects to MongoDB and shows all saved links on a web page.
-When you open http://localhost:8002/articles, you see a list of blue clickable links that open the real articles.
+When you open http://localhost:8000/articles, you see a list of blue clickable links that open the real articles.
 
 Everything runs together with Docker Compose.
 All services use one network (news_net) so they can talk to each other.
